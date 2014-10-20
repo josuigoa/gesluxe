@@ -1,0 +1,6 @@
+{
+    "textures" : [
+        { "id" : "assets/luxe.png" },
+        { "id" : "assets/arrow.png" }
+    ]
+}

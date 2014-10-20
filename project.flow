@@ -1,0 +1,23 @@
+{
+  project : {
+    name : 'gesluxe_test',
+    version : '1.0.0',
+    author : 'josu',
+
+    app : {
+      name : 'gesluxe_test',
+      package : 'test.josuigoa.gesluxe',
+    },
+
+    build : {
+      dependencies : {
+        luxe : '*',
+      }
+    },
+
+    files : {
+      config : 'config.json',
+      assets : 'assets/'
+    }
+  }
+}
