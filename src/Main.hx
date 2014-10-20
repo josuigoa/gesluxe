@@ -117,25 +117,35 @@ class Main extends luxe.Game
 		
 		doubleTapGesture = new TapGesture();
 		doubleTapGesture.numTapsRequired = 2;
+		//doubleTapGesture.maxTapDelay = 10;
+		//doubleTapGesture.maxTapDistance = 10;
+		//doubleTapGesture.maxTapDuration = 20;
 		doubleTapGesture.events.listen(GestureEvent.GESTURE_RECOGNIZED, onTap);
 		twoFingerTapGesture = new TapGesture();
 		twoFingerTapGesture.numTouchesRequired = 2;
 		twoFingerTapGesture.events.listen(GestureEvent.GESTURE_RECOGNIZED, onTap);
 		
 		pan = new PanGesture();
+		//pan.minNumTouchesRequired = 1;
+		//pan.direction = PanGesture.HORIZONTAL;
 		pan.maxNumTouchesRequired = 2;
 		pan.events.listen(GestureEvent.GESTURE_BEGAN, onPan);
 		pan.events.listen(GestureEvent.GESTURE_CHANGED, onPan);
 		
 		longpress = new LongPressGesture();
+		//longpress.minPressDuration = 300;
+		//longpress.numTouchesRequired = 1;
 		longpress.events.listen(GestureEvent.GESTURE_STATE_CHANGE, onLongpress);
 		fingerToImageOffset = new Vector();
 		
 		swipe = new SwipeGesture();
+		//swipe.numTouchesRequired = 1;
+		//swipe.maxDuration = 200;
+		//swipe.minOffset = 300;
+		//swipe.minVelocity = 50;
 		swipe.events.listen(GestureEvent.GESTURE_RECOGNIZED, onSwipe);
 		swipe.gesturesShouldRecognizeSimultaneously = swipeRecognizeSimultaneous;
 		swipe.canBePreventedByGesture = swipe_canBePreventedByGesture;
-		//swipe.events.listen(GestureEvent.GESTURE_FAILED, onGestureStateChange);
 		
 		
 		transformGesture = new TransformGesture();
@@ -143,6 +153,7 @@ class Main extends luxe.Game
 		transformGesture.events.listen(GestureEvent.GESTURE_CHANGED, onTransform);
 		
 		zoom = new ZoomGesture();
+		//zoom.lockAspectRatio = false;
 		zoom.events.listen(GestureEvent.GESTURE_BEGAN, onZoom);
 		zoom.events.listen(GestureEvent.GESTURE_CHANGED, onZoom);
 		
