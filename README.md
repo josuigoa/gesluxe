@@ -11,4 +11,4 @@ Gestures:
  * Zoom
 
 
-Only tried in windows machine (tap, pan, long press, swipe). Couldn't try in mobile devices (transform, zoom).
+Only tested on windows machine (tap, pan, long press, swipe). Couldn't test on mobile devices (transform, zoom).
