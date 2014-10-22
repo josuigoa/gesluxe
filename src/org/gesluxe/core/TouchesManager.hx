@@ -45,37 +45,6 @@ class TouchesManager
 		var touch:Touch = createTouch();
 		touch.id = touchID;
 		
-		/*
-		var target:Object;
-		var altTarget:Object;
-		for each (var hitTester:ITouchHitTester in _hitTesters)
-		{
-			target = hitTester.hitTest(location, possibleTarget);
-			if (target)
-			{
-				if ((target is Stage))
-				{
-					// NB! Target is flash.display::Stage is a special case. If it is true, we want
-					// to give a try to a lower-priority (Stage3D) hit-testers. 
-					altTarget = target;
-					continue;
-				}
-				else
-				{
-					// We found a target.
-					break;
-				}
-			}
-		}
-		if (!target && !altTarget)
-		{
-			throw new Error("Not touch target found (hit test)." +
-			"Something is wrong, at least flash.display::Stage should be found." +
-			"See Gestouch#addTouchHitTester() and Gestouch#inputAdapter.");
-		}
-		*/
-		
-		//touch.target = target || altTarget;
 		touch.setLocation(x, y, Std.int(Timer.stamp() * 1000));
 		
 		_touchesMap[touchID] = touch;
@@ -115,8 +84,6 @@ class TouchesManager
 		activeTouchesCount--;
 		
 		_gesturesManager.onTouchEnd(touch);
-		
-		//touch.target = null;
 	}
 	
 	
@@ -132,8 +99,6 @@ class TouchesManager
 		activeTouchesCount--;
 		
 		_gesturesManager.onTouchCancel(touch);
-		
-		//touch.target = null;
 	}
 	
 	

@@ -7,7 +7,7 @@ import org.gesluxe.core.Touch;
  * ...
  * @author Josu Igoa
  */
-class LongPressGesture extends AbstractContinuousGesture
+class LongPressGesture extends Gesture
 {
 	public var numTouchesRequired:UInt = 1;
 	/**
@@ -70,16 +70,15 @@ class LongPressGesture extends AbstractContinuousGesture
 		{
 			_numTouchesRequiredReached = true;
 			_timer.reset();
-			_timer.schedule(minPressDuration/1000, timerCompleteHandler);
+			_timer.schedule(minPressDuration / 1000, timerCompleteHandler);
+			
 		}
 	}
 	
 	override function onTouchMove(touch:Touch)
 	{
 		if (state == GestureState.POSSIBLE && slop > 0 && touch.locationOffset.length > slop)
-		{
 			setState(GestureState.FAILED);
-		}
 		else if (state == GestureState.BEGAN || state == GestureState.CHANGED)
 		{
 			updateLocation();
@@ -98,14 +97,10 @@ class LongPressGesture extends AbstractContinuousGesture
 				setState(GestureState.ENDED);
 			}
 			else
-			{
 				setState(GestureState.FAILED);
-			}
 		}
 		else
-		{
 			setState(GestureState.FAILED);
-		}
 	}
 	
 	//--------------------------------------------------------------------------

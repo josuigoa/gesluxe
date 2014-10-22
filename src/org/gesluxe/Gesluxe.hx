@@ -30,11 +30,13 @@ class Gesluxe
 		gesturesManager = new GesturesManager();
 		_touchesManager = new TouchesManager(gesturesManager);
 		
+		#if !mobile
+		Luxe.core.emitter.on("mousedown", onmousedown);
+		#else
 		Luxe.core.emitter.on("touchdown", ontouchdown);
 		Luxe.core.emitter.on("touchmove", ontouchmove);
 		Luxe.core.emitter.on("touchup", ontouchup);
-		
-		Luxe.core.emitter.on("mousedown", onmousedown);
+		#end
 	}
 	
 	static function ontouchdown(event:TouchEvent) 
@@ -48,21 +50,17 @@ class Gesluxe
 			dx : x,
 			dy : y,
 			pos : _touch_pos*/
-		
-		trace("ontouchdown: " + event.pos);
-		_touchesManager.onTouchBegin(event.touch_id, event.pos.x, event.pos.y); //, event.target as InteractiveObject);
+		_touchesManager.onTouchBegin(event.touch_id, event.pos.x * Luxe.screen.w, event.pos.y * Luxe.screen.h); //, event.target as InteractiveObject);
 	}
 	
 	static function ontouchmove(event:TouchEvent) 
 	{
-		trace("ontouchmove: " + event.pos);
-		_touchesManager.onTouchMove(event.touch_id, event.pos.x, event.pos.y);
+		_touchesManager.onTouchMove(event.touch_id, event.pos.x * Luxe.screen.w, event.pos.y * Luxe.screen.h);
 	}
 	
 	static function ontouchup(event:TouchEvent) 
 	{
-		trace("ontouchup: " + event.pos);
-		_touchesManager.onTouchEnd(event.touch_id, event.pos.x, event.pos.y);
+		_touchesManager.onTouchEnd(event.touch_id, event.pos.x * Luxe.screen.w, event.pos.y * Luxe.screen.h);
 	}
 	
 	static function onmousedown(event:MouseEvent)
@@ -101,6 +99,8 @@ class Gesluxe
 	
 	static public function dispose() 
 	{
+		gesturesManager.removeAllGestures();
+		gesturesManager = null;
 		touchesManager = null;
 		
 		Luxe.core.emitter.off("touchdown", ontouchdown);

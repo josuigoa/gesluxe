@@ -274,38 +274,6 @@ class Gesture
 	{
 		
 	}
-	
-	/**
-	 * If a gesture should receive a touch.
-	 * 
-	 * @see Touch
-	 */
-	//public function gestureShouldReceiveTouchCallback(gesture:Gesture, touch:Touch):Bool
-	//{
-		//return true;
-	//}
-	
-	/**
-	 * If a gesture should be recognized (transition from state POSSIBLE to state RECOGNIZED or BEGAN).
-	 * Returning <code>false</code> causes the gesture to transition to the FAILED state.
-	 * 
-	 * @see state
-	 * @see GestureState
-	 */
-	//public function gestureShouldBeginCallback(gesture:Gesture):Bool
-	//{
-		//return true;
-	//}
-	
-	/**
-	 * If two gestures should be allowed to recognize simultaneously.
-	 * 
-	 */
-	//public function gesturesShouldRecognizeSimultaneouslyCallback(gesture:Gesture, otherGesture:Gesture):Bool
-	//{
-		//return true;
-	//}
-	
 	public function isTrackingTouch(touchID:UInt):Bool
 	{
 		return _touchesMap.exists(touchID);

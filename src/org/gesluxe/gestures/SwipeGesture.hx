@@ -9,7 +9,7 @@ import org.gesluxe.utils.GestureUtils;
  * ...
  * @author Josu Igoa
  */
-class SwipeGesture extends AbstractDiscreteGesture
+class SwipeGesture extends Gesture
 {
 	// DIRECTIONS
 	public static inline var RIGHT:UInt = 1 << 0;

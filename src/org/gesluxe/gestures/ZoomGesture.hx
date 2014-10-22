@@ -7,7 +7,7 @@ import org.gesluxe.core.Touch;
  * ...
  * @author Josu Igoa
  */
-class ZoomGesture extends AbstractContinuousGesture
+class ZoomGesture extends Gesture
 {
 	public var slop:Float = Gesture.DEFAULT_SLOP;
 	public var lockAspectRatio:Bool = true;
@@ -47,7 +47,7 @@ class ZoomGesture extends AbstractContinuousGesture
 		{
 			_touch2 = touch;
 			
-			_transformVector = _touch2.location.subtract(_touch1.location);
+			_transformVector = Vector.Subtract(_touch2.location, _touch1.location);
 			_initialDistance = _transformVector.length;
 		}
 	}
@@ -57,7 +57,7 @@ class ZoomGesture extends AbstractContinuousGesture
 		if (_touchesCount < 2)
 			return;
 		
-		var currTransformVector:Vector = _touch2.location.subtract(_touch1.location);
+		var currTransformVector:Vector = Vector.Subtract(_touch2.location, _touch1.location);
 		
 		if (state == GestureState.POSSIBLE)
 		{
@@ -74,8 +74,7 @@ class ZoomGesture extends AbstractContinuousGesture
 				// adjust _transformVector to avoid initial "jump"
 				var slopVector:Vector = currTransformVector.clone();
 				//slopVector.normalize(_initialDistance + (d >= 0 ? slop : -slop));
-				slopVector.normalize();
-				_transformVector = slopVector;
+				_transformVector = Vector.Multiply(slopVector.normalize(), _initialDistance + (d >= 0 ? slop : -slop));
 			}
 		}
 		
@@ -90,8 +89,8 @@ class ZoomGesture extends AbstractContinuousGesture
 			scaleY *= currTransformVector.y / _transformVector.y;
 		}
 		
-		_transformVector.x = currTransformVector.x;
-		_transformVector.y = currTransformVector.y;
+		//_transformVector.x = currTransformVector.x;
+		//_transformVector.y = currTransformVector.y;
 		
 		updateLocation();
 		

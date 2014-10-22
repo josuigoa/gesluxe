@@ -7,7 +7,7 @@ import org.gesluxe.core.Touch;
  * ...
  * @author Josu Igoa
  */
-class TransformGesture extends AbstractContinuousGesture
+class TransformGesture extends Gesture
 {
 	public var slop:Float = Gesture.DEFAULT_SLOP;
 	var _touch1:Touch;
@@ -47,14 +47,11 @@ class TransformGesture extends AbstractContinuousGesture
 		}
 		
 		if (_touchesCount == 1)
-		{
 			_touch1 = touch;
-		}
 		else
 		{
 			_touch2 = touch;
-			
-			_transformVector = _touch2.location.subtract(_touch1.location);
+			_transformVector = Vector.Subtract(_touch2.location, _touch1.location);
 		}
 		
 		updateLocation();
@@ -79,7 +76,7 @@ class TransformGesture extends AbstractContinuousGesture
 				if (_touch2 != null)
 				{
 					// Recalculate _transformVector to avoid initial "jump" on recognize
-					_transformVector = _touch2.location.subtract(_touch1.location);
+					_transformVector = Vector.Subtract(_touch2.location, _touch1.location);
 				}
 				return;
 			}
@@ -89,10 +86,9 @@ class TransformGesture extends AbstractContinuousGesture
 		offsetY = location.y - prevLocation.y;
 		if (_touch2 != null)
 		{
-			var currTransformVector = _touch2.location.subtract(_touch1.location);
+			var currTransformVector = Vector.Subtract(_touch2.location, _touch1.location);
 			rotation = Math.atan2(currTransformVector.y, currTransformVector.x) - Math.atan2(_transformVector.y, _transformVector.x);
 			scale = currTransformVector.length / _transformVector.length;
-			_transformVector = _touch2.location.subtract(_touch1.location);
 		}
 		
 		setState(state == GestureState.POSSIBLE ? GestureState.BEGAN : GestureState.CHANGED);
@@ -110,9 +106,8 @@ class TransformGesture extends AbstractContinuousGesture
 		else// == 1
 		{
 			if (touch == _touch1)
-			{
 				_touch1 = _touch2;
-			}
+			
 			_touch2 = null;
 			
 			if (state == GestureState.BEGAN || state == GestureState.CHANGED)

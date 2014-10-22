@@ -2,13 +2,14 @@ Gesluxe
 =======
 Basically is a for from https://github.com/fljot/Gestouch
 
-Gestures:
+Supported gestures:
  * Tap
  * Pan
  * Long press
  * Swipe
- * Transform
  * Zoom
+ * Rotation
+ * Transform
 
 
-Only tested on windows machine (tap, pan, long press, swipe). Couldn't test on mobile devices (transform, zoom).
+It may work on every target supported by Luxe. Only tested in a windows machine (cpp target) and android (tablet and mobile).

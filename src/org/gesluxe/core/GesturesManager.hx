@@ -8,13 +8,10 @@ import org.gesluxe.utils.GestureUtils;
  */
 class GesturesManager
 {
-	//const _frameTickerShape:Shape = new Shape();
 	var _gesturesMap:Map<Gesture, Bool>;
 	var _gesturesForTouchMap:Map<Touch, Array<Gesture>>;
-	//var _gesturesForTargetMap:Map<Dynamic, Array<Gesture>;
 	var _dirtyGesturesCount:UInt = 0;
 	var _dirtyGesturesMap:Map<Gesture, Bool>;
-	//var _stage:Stage;
 	
 	public function new() 
 	{
@@ -26,65 +23,25 @@ class GesturesManager
 	public function addGesture(gesture:Gesture)
 	{
 		if (gesture == null)
-		{
 			throw "Argument 'gesture' must be not null.";
-		}
-		
-		/*
-		var target = gesture.target;
-		if (!target)
-		{
-			throw "Gesture must have target.";
-		}
-		
-		var targetGestures:Array<Gesture> = _gesturesForTargetMap[target];
-		if (targetGestures)
-		{
-			if (targetGestures.indexOf(gesture) == -1)
-			{
-				targetGestures.push(gesture);
-			}
-		}
-		else
-		{
-			targetGestures = _gesturesForTargetMap[target] = new Array<Gesture>();
-			targetGestures[0] = gesture;
-		}
-		
-		_gesturesForTargetMap.set(target, targetGestures);
-		_gesturesMap[gesture] = true;
-		
-		if (_stage == null)
-		{
-			var targetAsDO:DisplayObject = target as DisplayObject;
-			if (targetAsDO)
-			{
-				if (targetAsDO.stage)
-				{
-					onStageAvailable(targetAsDO.stage);
-				}
-				else
-				{
-					targetAsDO.addEventListener(Event.ADDED_TO_STAGE, gestureTarget_addedToStageHandler, false,0, true);
-				}
-			}
-		}
-		*/
 		
 		_gesturesMap[gesture] = true;
 	}
 	
-	
 	public function removeGesture(gesture:Gesture)
 	{
 		if (gesture == null)
-		{
 			throw "Argument 'gesture' must be not null.";
-		}
 		
 		_gesturesMap.remove(gesture);
 		
 		gesture.reset();
+	}
+	
+	public function removeAllGestures()
+	{
+		for (g in _gesturesMap.keys())
+			removeGesture(g);
 	}
 	
 	public function scheduleGestureStateReset(gesture:Gesture)
@@ -144,51 +101,6 @@ class GesturesManager
 			// touch object may be pooled in the future
 			GestureUtils.clearArray(gesturesForTouch);
 		}
-		
-		/*
-		var target = touch.target;
-		var displayListAdapter:IDisplayListAdapter = Gestouch.gestouch_internal::getDisplayListAdapter(target);
-		if (!displayListAdapter)
-		{
-			throw new Error("Display list adapter not found for target of type '" + getQualifiedClassName(target) + "'.");
-		}
-		const hierarchy:Vector.<Object> = displayListAdapter.getHierarchy(target);
-		const hierarchyLength:uint = hierarchy.length;
-		if (hierarchyLength == 0)
-		{
-			throw "No hierarchy build for target '" + target +"'. Something is wrong with that IDisplayListAdapter.";
-		}
-		if (_stage && !(hierarchy[hierarchyLength - 1] is Stage))
-		{
-			// Looks like some non-native (non DisplayList) hierarchy
-			// but we must always handle gestures with Stage target
-			// since Stage is anyway the top-most parent
-			hierarchy[hierarchyLength] = _stage;
-		}
-		
-		// Create a sorted(!) list of gestures which are interested in this touch.
-		// Sorting priority: deeper target has higher priority, recently added gesture has higher priority.
-		var gesturesForTarget:Vector.<Gesture>;
-		for each (target in hierarchy)
-		{
-			gesturesForTarget = _gesturesForTargetMap[target] as Vector.<Gesture>;
-			if (gesturesForTarget)
-			{
-				i = gesturesForTarget.length;
-				while (i-- > 0)
-				{
-					gesture = gesturesForTarget[i];
-					if (gesture.enabled &&
-						(gesture.gestureShouldReceiveTouchCallback == null ||
-						 gesture.gestureShouldReceiveTouchCallback(gesture, touch)))
-					{
-						//TODO: optimize performance! decide between unshift() vs [i++] = gesture + reverse()
-						gesturesForTouch.unshift(gesture);
-					}
-				}
-			}
-		}
-		*/
 		
 		for (gesture in _gesturesMap.keys()) 
 		{

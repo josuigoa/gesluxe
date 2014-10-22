@@ -7,7 +7,7 @@ import org.gesluxe.gestures.Gesture;
  * ...
  * @author Josu Igoa
  */
-class PanGesture extends AbstractContinuousGesture
+class PanGesture extends Gesture
 {
 	public static inline var NO_DIRECTION:UInt = 0;
 	public static inline var VERTICAL:UInt = 1 << 0;

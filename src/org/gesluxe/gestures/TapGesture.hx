@@ -9,7 +9,7 @@ import org.gesluxe.utils.GestureUtils;
  * ...
  * @author Josu Igoa
  */
-class TapGesture extends AbstractDiscreteGesture
+class TapGesture extends Gesture
 {
 	public var numTouchesRequired:UInt = 1;
 	public var numTapsRequired:UInt = 1;

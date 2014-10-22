@@ -7,7 +7,7 @@ import org.gesluxe.core.Touch;
  * ...
  * @author Josu Igoa
  */
-class RotateGesture extends AbstractContinuousGesture
+class RotateGesture extends Gesture
 {
 	public var slop:Float = Gesture.DEFAULT_SLOP;
 	
@@ -15,7 +15,7 @@ class RotateGesture extends AbstractContinuousGesture
 	var _touch2:Touch;
 	var _transformVector:Vector;
 	var _thresholdAngle:Float;
-	/** rotatio: in radians */
+	/** rotation: in radians */
 	public var rotation:Float = 0;
 
 	public function new() 
@@ -43,7 +43,7 @@ class RotateGesture extends AbstractContinuousGesture
 		{
 			_touch2 = touch;
 			
-			_transformVector = _touch2.location.subtract(_touch1.location);
+			_transformVector = Vector.Subtract(_touch2.location, _touch1.location);
 			
 			// @see chord length formula
 			_thresholdAngle = Math.asin(slop / (2 * _transformVector.length)) * 2;
@@ -56,7 +56,7 @@ class RotateGesture extends AbstractContinuousGesture
 		if (_touchesCount < 2)
 			return;
 		
-		var currTransformVector:Vector = _touch2.location.subtract(_touch1.location);
+		var currTransformVector:Vector = Vector.Subtract(_touch2.location, _touch1.location);
 		var cross:Float = (_transformVector.x * currTransformVector.y) - (currTransformVector.x * _transformVector.y);
 		var dot:Float = (_transformVector.x * currTransformVector.x) + (_transformVector.y * currTransformVector.y);
 		var rot:Float = Math.atan2(cross, dot);
@@ -74,8 +74,8 @@ class RotateGesture extends AbstractContinuousGesture
 			rotation = rot > 0 ? rot - _thresholdAngle : rot + _thresholdAngle;
 		}
 		
-		_transformVector.x = currTransformVector.x;
-		_transformVector.y = currTransformVector.y;
+		//_transformVector.x = currTransformVector.x;
+		//_transformVector.y = currTransformVector.y;
 		rotation = rot;
 		
 		updateLocation();

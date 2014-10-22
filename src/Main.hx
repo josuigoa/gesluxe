@@ -1,11 +1,5 @@
+package;
 
-import entities.BasicGestureEntity;
-import entities.LongPressEntity;
-import entities.PanEntity;
-import entities.SwipeEntity;
-import entities.TapUsageEntity;
-import entities.TransformEntity;
-import entities.ZoomEntity;
 import luxe.Parcel;
 import luxe.ParcelProgress;
 import luxe.tween.Actuate;
@@ -13,6 +7,7 @@ import luxe.tween.easing.Sine;
 import luxe.Visual;
 import org.gesluxe.core.GestureState;
 import org.gesluxe.gestures.Gesture;
+import org.gesluxe.gestures.RotateGesture;
 import org.gesluxe.gestures.SwipeGesture;
 import org.gesluxe.gestures.TransformGesture;
 import org.gesluxe.gestures.ZoomGesture;
@@ -27,7 +22,6 @@ import org.gesluxe.Gesluxe;
 import org.gesluxe.gestures.LongPressGesture;
 import org.gesluxe.gestures.PanGesture;
 import org.gesluxe.gestures.TapGesture;
-import examples.ConflictGestures;
 import phoenix.Batcher;
 import phoenix.Texture.FilterType;
 import ui.Button;
@@ -39,16 +33,16 @@ class Main extends luxe.Game
     var hud_batcher:Batcher;
 	var visual:Visual;
 	var arrow:Visual;
-	//var currentGestureEntity:BasicGestureEntity;
-	var currentGesture:String;
+	var currentGestureName:String;
 	var pan:PanGesture;
 	var doubleTapGesture:TapGesture;
 	var twoFingerTapGesture:TapGesture;
 	var longpress:LongPressGesture;
 	var fingerToImageOffset:Vector;
 	var swipe:SwipeGesture;
-	var transformGesture:TransformGesture;
 	var zoom:ZoomGesture;
+	var rotate:RotateGesture;
+	var transformGesture:TransformGesture;
 
     override function ready()
 	{
@@ -118,7 +112,7 @@ class Main extends luxe.Game
 		doubleTapGesture = new TapGesture();
 		doubleTapGesture.numTapsRequired = 2;
 		//doubleTapGesture.maxTapDelay = 10;
-		//doubleTapGesture.maxTapDistance = 10;
+		doubleTapGesture.maxTapDistance = 100;
 		//doubleTapGesture.maxTapDuration = 20;
 		doubleTapGesture.events.listen(GestureEvent.GESTURE_RECOGNIZED, onTap);
 		twoFingerTapGesture = new TapGesture();
@@ -144,33 +138,24 @@ class Main extends luxe.Game
 		//swipe.minOffset = 300;
 		//swipe.minVelocity = 50;
 		swipe.events.listen(GestureEvent.GESTURE_RECOGNIZED, onSwipe);
-		swipe.gesturesShouldRecognizeSimultaneously = swipeRecognizeSimultaneous;
-		swipe.canBePreventedByGesture = swipe_canBePreventedByGesture;
-		
-		
-		transformGesture = new TransformGesture();
-		transformGesture.events.listen(GestureEvent.GESTURE_BEGAN, onTransform);
-		transformGesture.events.listen(GestureEvent.GESTURE_CHANGED, onTransform);
 		
 		zoom = new ZoomGesture();
 		//zoom.lockAspectRatio = false;
 		zoom.events.listen(GestureEvent.GESTURE_BEGAN, onZoom);
 		zoom.events.listen(GestureEvent.GESTURE_CHANGED, onZoom);
 		
+		rotate = new RotateGesture();
+		rotate.events.listen(GestureEvent.GESTURE_BEGAN, onRotate);
+		rotate.events.listen(GestureEvent.GESTURE_CHANGED, onRotate);
+		
+		transformGesture = new TransformGesture();
+		transformGesture.events.listen(GestureEvent.GESTURE_BEGAN, onTransform);
+		transformGesture.events.listen(GestureEvent.GESTURE_CHANGED, onTransform);
+		
 		create_hud();
 		
 		onbuttonclick({type:"tap"});
     } //assets_loaded
-	
-	function swipeRecognizeSimultaneous(gesture:Gesture, otherGesture:Gesture):Bool
-	{
-		return (Std.is(gesture, SwipeGesture) && Std.is(otherGesture, PanGesture)) || (Std.is(gesture, PanGesture) && Std.is(otherGesture, SwipeGesture));
-	}
-	
-	function swipe_canBePreventedByGesture(gesture:Gesture):Bool
-	{
-		return false;
-	}
 	
     override function onkeyup( e:KeyEvent )
 	{
@@ -182,21 +167,41 @@ class Main extends luxe.Game
 	
 	function onbuttonclick(_prop:Dynamic) 
 	{
+		Gesluxe.gesturesManager.removeAllGestures();
 		if (_prop == null) _prop = { };
 		if (_prop.type == null) _prop.type = "tap";
 		
-		trace("BOTOI CLICK LISTENER: " + _prop.type);
-		//currentGestureEntity.destroy();
 		_logText.text = _prop.type.toUpperCase();
 		_tutorial.text = "";
 		visual.visible = _prop.type != "swipe";
+		visual.pos = Luxe.screen.mid;
+		visual.radians = 0;
+		visual.scale.x = visual.scale.y = 1;
 		arrow.visible = !visual.visible;
 		
-		currentGesture = _prop.type;
-		if (_prop.type == "tap")
-			_tutorial.text = "Double tap / Two fingers tap";
-		else if (_prop.type == "longpress")
-			_tutorial.text = "Long press and move";
+		currentGestureName = _prop.type;
+		switch (_prop.type) 
+		{
+			case "tap":
+				_tutorial.text = "Double tap / Two fingers tap";
+				Gesluxe.gesturesManager.addGesture(doubleTapGesture);
+				Gesluxe.gesturesManager.addGesture(twoFingerTapGesture);
+			case "pan":
+				Gesluxe.gesturesManager.addGesture(pan);
+			case "longpress":
+				_tutorial.text = "Long press and move";
+				Gesluxe.gesturesManager.addGesture(longpress);
+			case "swipe":
+				Gesluxe.gesturesManager.addGesture(swipe);
+			case "zoom":
+				Gesluxe.gesturesManager.addGesture(zoom);
+			case "rotate":
+				Gesluxe.gesturesManager.addGesture(rotate);
+			case "transform":
+				Gesluxe.gesturesManager.addGesture(transformGesture);
+			default:
+				
+		}
 	}
 	
     function create_hud() {
@@ -211,7 +216,8 @@ class Main extends luxe.Game
             //the add it to the renderer
         Luxe.renderer.add_batch(hud_batcher);
 
-		var buttonY = 585;
+		//var buttonY = 585;
+		var buttonY = Luxe.screen.h * .9;
 		var b:Button = new Button("Tap", { name:"btn_tap", pos:new Vector(15, buttonY), batcher:hud_batcher } );
 		b.events.listen(Button.CLICK, onbuttonclick);
 		b = new Button("Pan", { name:"btn_pan", pos:new Vector(b.size_rect.x + b.size_rect.w + 15, buttonY), batcher:hud_batcher } );
@@ -220,9 +226,11 @@ class Main extends luxe.Game
 		b.events.listen(Button.CLICK, onbuttonclick);
 		b = new Button("Swipe", { name:"btn_swipe", pos:new Vector(b.size_rect.x + b.size_rect.w + 15, buttonY), batcher:hud_batcher } );
 		b.events.listen(Button.CLICK, onbuttonclick);
-		b = new Button("Transform", { name:"btn_trans", pos:new Vector(b.size_rect.x + b.size_rect.w + 15, buttonY), batcher:hud_batcher } );
-		b.events.listen(Button.CLICK, onbuttonclick);
 		b = new Button("Zoom", { name:"btn_zoom", pos:new Vector(b.size_rect.x + b.size_rect.w + 15, buttonY), batcher:hud_batcher } );
+		b.events.listen(Button.CLICK, onbuttonclick);
+		b = new Button("Rotate", { name:"btn_rotate", pos:new Vector(b.size_rect.x + b.size_rect.w + 15, buttonY), batcher:hud_batcher } );
+		b.events.listen(Button.CLICK, onbuttonclick);
+		b = new Button("Transform", { name:"btn_trans", pos:new Vector(b.size_rect.x + b.size_rect.w + 15, buttonY), batcher:hud_batcher } );
 		b.events.listen(Button.CLICK, onbuttonclick);
 
         Luxe.draw.box({
@@ -250,7 +258,7 @@ class Main extends luxe.Game
 	/* GESTURE LISTENERS */
 	function onTap(evd:GestureEventData)
 	{
-		if (currentGesture != "tap") return;
+		if (currentGestureName != "tap") return;
 		
 		var scale:Float;
 		
@@ -267,7 +275,7 @@ class Main extends luxe.Game
 	
 	function onPan(evd:GestureEventData)
 	{
-		if (currentGesture != "pan") return;
+		if (currentGestureName != "pan") return;
 		
 		visual.pos.x += pan.offsetX;
 		visual.pos.y += pan.offsetY;
@@ -275,7 +283,7 @@ class Main extends luxe.Game
 	
 	function onLongpress(evd:GestureEventData)
 	{
-		if (currentGesture != "longpress") return;
+		if (currentGestureName != "longpress") return;
 		
 		var loc = longpress.location;
 		
@@ -304,13 +312,10 @@ class Main extends luxe.Game
 	
 	function onSwipe(evd:GestureEventData)
 	{
-		if (currentGesture != "swipe") return;
+		if (currentGestureName != "swipe") return;
 		
-		//arrow.flipx = (swipe.offsetX < 0 && swipe.offsetY == 0);
 		var t = (swipe.offsetX < 0 && swipe.offsetY == 0 ? -1 : 1);
-		//trace("SWIPE t: " + t);
 		arrow.scale.x = t * Math.abs(arrow.scale.x);
-		//if (t == 1) trace (swipe.offsetY + ", " + swipe.offsetX);
 		var angle = 0;//event.offsetX == 0 ? (event.offsetY > 0 ? 90 : -90) : Math.atan(event.offsetY / event.offsetX) * 180 / Math.PI;
 		if (swipe.offsetY != 0 && Math.abs(swipe.offsetY) > Math.abs(swipe.offsetX))
 			angle = swipe.offsetY > 0 ? 90 : -90;
@@ -320,28 +325,33 @@ class Main extends luxe.Game
 		Actuate.tween(arrow.color, 2, { a:0 } ).ease(Sine.easeIn);
 	}
 	
+	function onZoom(evd:GestureEventData)
+	{
+		if (currentGestureName != "zoom") return;
+		
+		visual.scale.set_xy(zoom.scaleX, zoom.scaleY);
+	}
+	
+	function onRotate(evd:GestureEventData)
+	{
+		if (currentGestureName != "rotate") return;
+		
+		visual.radians = rotate.rotation;
+	}
+	
 	function onTransform(evd:GestureEventData)
 	{
-		if (currentGesture != "transform") return;
+		if (currentGestureName != "transform") return;
 		
 		// Panning
 		visual.pos.x += transformGesture.offsetX;
 		visual.pos.y += transformGesture.offsetY;
-		//visual.pos.set_xy(transformGesture.offsetX, transformGesture.offsetY);
-		
 		if (transformGesture.scale != 1 || transformGesture.rotation != 0)
 		{
 			// Scale and rotation.
 			visual.radians = transformGesture.rotation;
 			visual.scale.set_xy(transformGesture.scale, transformGesture.scale);
 		}
-	}
-	
-	function onZoom(evd:GestureEventData)
-	{
-		if (currentGesture != "zoom") return;
-		
-		visual.scale.set_xy(zoom.scaleX, zoom.scaleY);
 	}
 
 } //Main

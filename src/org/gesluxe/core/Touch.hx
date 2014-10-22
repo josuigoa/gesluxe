@@ -106,6 +106,6 @@ class Touch
 	
 	public function get_locationOffset():Vector
 	{
-		return location.clone().subtract(beginLocation);
+		return Vector.Subtract(location, beginLocation);
 	}
 }
