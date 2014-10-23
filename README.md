@@ -1,6 +1,6 @@
 Gesluxe
 =======
-Basically is a fork from https://github.com/fljot/Gestouch
+Basically is a fork of https://github.com/fljot/Gestouch
 
 ##Supported gestures:
  * Tap
