@@ -100,8 +100,8 @@ class Main extends luxe.Game
 								pos:new Vector(10, 10) } );
 								
 		_tutorial = new Text( { name: "tutorial",
-										parent: this,
 										pos: new Vector(Luxe.screen.w * .5, 5) } );
+		//_tutorial.parent = this;
 		
 		Gesluxe.init();
 		
