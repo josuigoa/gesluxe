@@ -67,10 +67,9 @@ class Main extends luxe.Game
 	
 	function assets_loaded(_)
 	{
-		var texture = Luxe.loadTexture("assets/luxe.png");
+		var texture = Luxe.loadTexture("assets/luxelogo.png");
 		//now that the image is loaded
         //keep pixels crisp when we resize it
-		texture.filter = FilterType.nearest;
 		
 		//work out the correct size based on a ratio
         var h = Luxe.screen.h * .2;
@@ -84,7 +83,6 @@ class Main extends luxe.Game
 		});
 		
 		texture = Luxe.loadTexture("assets/arrow.png");
-		texture.filter = FilterType.nearest;
         h = Luxe.screen.h * .2;
         w = (h / texture.height) * texture.width;
 		
