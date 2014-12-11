@@ -1,6 +1,6 @@
 Gesluxe
 =======
-Basically is a fork of https://github.com/fljot/Gestouch
+Inspired by Gestouch ActionScript 3 gesture recognition library
 
 ##Supported gestures:
  * Tap
@@ -12,7 +12,7 @@ Basically is a fork of https://github.com/fljot/Gestouch
  * Transform
 
 
-It should work on every target supported by Luxe. Only tested in a windows machine (cpp target) and android (tablet and mobile).
+It should work on every target supported by Luxe. Tested and working on CPP (Window, Mac, iOS, Android) and Web
 
 ##Screenshots
 ![](https://github.com/josuigoa/Gesluxe/blob/master/screenshot1.png)
