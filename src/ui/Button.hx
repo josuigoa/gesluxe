@@ -21,7 +21,7 @@ class Button extends Entity
 {
 	static public inline var CLICK:String = "button.click";
 	
-    var nineSlice : NineSlice;
+    var geom : NineSlice;
     var text : Text;
 	public var size_rect (default, null): Rectangle;
 	
@@ -31,7 +31,7 @@ class Button extends Entity
 		
 		var mb = (_options != null && _options.batcher != null) ? _options.batcher : Luxe.renderer.batcher;
 		
-		nineSlice = new NineSlice({
+		geom = new NineSlice({
             texture : (btnTexture == null) ? Luxe.loadTexture('tiny.button.png') : btnTexture,
 			parent: this,
 			batcher: mb,
@@ -53,41 +53,26 @@ class Button extends Entity
         var textSize = text.font.get_text_dimensions(txt, new Vector(sc, sc));
 		size_rect = new Rectangle(pos.x - textSize.x * .1, pos.y - textSize.y * .1, textSize.x * 1.2, textSize.y * 1.2);
 		
-        nineSlice.create( new Vector(size_rect.x, size_rect.y), size_rect.w, size_rect.h);
+        geom.create( new Vector(size_rect.x, size_rect.y), size_rect.w, size_rect.h);
 	}
 	
-	#if !mobile
-	override public function ontouchdown(event:TouchEvent) 
+	override public function onmouseup(event:MouseEvent)
 	{
-		super.ontouchdown(event);
+		super.onmouseup(event);
 		
-		if (size_rect.point_inside(event.))
-			nineSlice.color = new Color().rgb(0x009900);
+		point_inside(event.pos);
 	}
 	
 	override public function ontouchup(event:TouchEvent) 
 	{
 		super.ontouchup(event);
 		
-		nineSlice.color = new Color().rgb(0x009900);
+		point_inside(event.pos);
+	}
+	
+	function point_inside(point:Vector):Void 
+	{
 		if (size_rect.point_inside(point))
 			events.fire(CLICK, { type:text.text.toLowerCase() } );
 	}
-	#else
-	override public function onmousedown(event:MouseEvent)
-	{
-		super.onmousedown(event);
-		
-		if (size_rect.point_inside(event.pos))
-			nineSlice.color = new Color().rgb(0x009900);
-	}
-	override public function onmouseup(event:MouseEvent)
-	{
-		super.onmouseup(event);
-		
-		nineSlice.color = new Color().rgb(0x009900);
-		if (size_rect.point_inside(event.pos))
-			events.fire(CLICK, { type:text.text.toLowerCase() } );
-	}
-	#end
 }
