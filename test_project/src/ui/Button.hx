@@ -46,12 +46,12 @@ class Button extends Entity
 							depth: 1,
 							batcher: mb,
 							text: txt,
-							size: 35
+							point_size: 35
 							} );
 		
-		var sc = text.text_options.size / text.font.font_size;
-        var textSize = text.font.get_text_dimensions(txt, new Vector(sc, sc));
-		size_rect = new Rectangle(pos.x - textSize.x * .1, pos.y - textSize.y * .1, textSize.x * 1.2, textSize.y * 1.2);
+		var size_vector = new Vector();
+		text.font.dimensions_of(txt, 35, size_vector);
+		size_rect = new Rectangle(pos.x - size_vector.x * .1, pos.y - size_vector.y * .1, size_vector.x * 1.2, size_vector.y * 1.2);
 		
         geom.create( new Vector(size_rect.x, size_rect.y), size_rect.w, size_rect.h);
 	}
