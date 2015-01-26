@@ -13,8 +13,8 @@ Inspired by Gestouch ActionScript 3 gesture recognition library
 
 ##Clone the repository and test
 > haxelib git gesluxe https://github.com/josuigoa/gesluxe.git
- * cd /path/to/gesluxe/test_project
- * haxelib run flow run web
+cd /path/to/gesluxe/test_project
+haxelib run flow run web
 
 It should work on every target supported by Luxe. Tested and working on CPP (Window, Mac, iOS, Android) and Web
 
