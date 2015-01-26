@@ -12,7 +12,7 @@ Inspired by Gestouch ActionScript 3 gesture recognition library
  * Transform
 
 ##Clone the repository and test
- * > haxelib git gesluxe https://github.com/josuigoa/gesluxe.git
+> haxelib git gesluxe https://github.com/josuigoa/gesluxe.git
  * cd /path/to/gesluxe/test_project
  * haxelib run flow run web
 
