@@ -31,11 +31,11 @@ class Gesluxe
 		_touchesManager = new TouchesManager(gesturesManager);
 		
 		#if !mobile
-		Luxe.core.emitter.on("mousedown", onmousedown);
+		Luxe.core.emitter.on(Luxe.Ev.mousedown, onmousedown);
 		#else
-		Luxe.core.emitter.on("touchdown", ontouchdown);
-		Luxe.core.emitter.on("touchmove", ontouchmove);
-		Luxe.core.emitter.on("touchup", ontouchup);
+		Luxe.core.emitter.on(Luxe.Ev.touchdown, ontouchdown);
+		Luxe.core.emitter.on(Luxe.Ev.touchmove, ontouchmove);
+		Luxe.core.emitter.on(Luxe.Ev.touchup, ontouchup);
 		#end
 	}
 	
@@ -68,7 +68,7 @@ class Gesluxe
 		var touchAccepted:Bool = _touchesManager.onTouchBegin(MOUSE_TOUCH_POINT_ID, event.pos.x, event.pos.y);
 			
 		if (touchAccepted)
-			installMouseListeners();
+			addmouselisteners();
 	}
 	
 	static private function onmousemove(event:MouseEvent) 
@@ -81,20 +81,20 @@ class Gesluxe
 		_touchesManager.onTouchEnd(MOUSE_TOUCH_POINT_ID, event.pos.x, event.pos.y);
 			
 		if (_touchesManager.activeTouchesCount == 0)
-			unstallMouseListeners();
+			removemouselisteners();
 	}
 	
-	static function installMouseListeners()
+	static function addmouselisteners()
 	{
-		Luxe.core.emitter.on("mousemove", onmousemove);
-		Luxe.core.emitter.on("mouseup", onmouseup);
+		Luxe.core.emitter.on(Luxe.Ev.mousemove, onmousemove);
+		Luxe.core.emitter.on(Luxe.Ev.mouseup, onmouseup);
 	}
 	
 	
-	static function unstallMouseListeners()
+	static function removemouselisteners()
 	{
-		Luxe.core.emitter.off("mousemove", onmousemove);
-		Luxe.core.emitter.off("mouseup", onmouseup);
+		Luxe.core.emitter.off(Luxe.Ev.mousemove, onmousemove);
+		Luxe.core.emitter.off(Luxe.Ev.mouseup, onmouseup);
 	}
 	
 	static public function dispose() 
@@ -103,11 +103,11 @@ class Gesluxe
 		gesturesManager = null;
 		touchesManager = null;
 		
-		Luxe.core.emitter.off("touchdown", ontouchdown);
-		Luxe.core.emitter.off("touchmove", ontouchmove);
-		Luxe.core.emitter.off("touchup", ontouchup);
+		Luxe.core.emitter.off(Luxe.Ev.touchdown, ontouchdown);
+		Luxe.core.emitter.off(Luxe.Ev.touchmove, ontouchmove);
+		Luxe.core.emitter.off(Luxe.Ev.touchup, ontouchup);
 		
-		Luxe.core.emitter.off("mousedown", onmousedown);
-		unstallMouseListeners();
+		Luxe.core.emitter.off(Luxe.Ev.mousedown, onmousedown);
+		removemouselisteners();
 	}
 }
