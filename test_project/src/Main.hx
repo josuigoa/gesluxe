@@ -150,6 +150,19 @@ class Main extends luxe.Game
 		transformGesture.events.listen(GestureEvent.GESTURE_BEGAN, onTransform);
 		transformGesture.events.listen(GestureEvent.GESTURE_CHANGED, onTransform);
 		
+		/*
+		if I want to recognize some gestures simultaneously, there is a Gesture.gesturesShouldRecognizeSimultaneously function.
+		It gets two gestures as parameters and return a boolean
+		e.g.: recognize simultaneously transform and zoom gestures
+		
+		zoom.gesturesShouldRecognizeSimultaneously = zoom_sim_recognizer;
+		
+		function zoom_sim_recognizer(gest_1:Gesture, gest_2:Gesture):Bool {
+			return gest_1 == zoom && gest_2 == transform;
+		}
+		
+		*/
+		
 		create_hud();
 		
 		onbuttonclick({type:"tap"});

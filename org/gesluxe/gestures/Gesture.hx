@@ -19,6 +19,8 @@ class Gesture
 	 */
 	var _touchesMap:Map<Int, Touch>;
 	var _touchesCount:UInt;
+	public var touchesCount(get, null):UInt;
+	public function get_touchesCount():UInt { return _touchesCount; }
 	public var state:GestureState;
 	public var idle:Bool;
 	
@@ -79,7 +81,7 @@ class Gesture
 	public var location(get, null):Vector;
 	public var enabled(default, set):Bool;
 	
-	public function new() 
+	public function new(addToManager:Bool = true) 
 	{
 		preinit();
 		
@@ -93,7 +95,8 @@ class Gesture
 		state = GestureState.POSSIBLE;
 		idle = true;
 		
-		_gesturesManager.addGesture(this);
+		if (addToManager)
+			_gesturesManager.addGesture(this);
 	}
 	
 	/**
