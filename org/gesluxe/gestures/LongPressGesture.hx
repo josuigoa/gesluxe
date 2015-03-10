@@ -21,9 +21,9 @@ class LongPressGesture extends Gesture
 	var _timer:Timer;
 	var _numTouchesRequiredReached:Bool;
 
-	public function new() 
+	public function new(addToManager:Bool = true) 
 	{
-		super();
+		super(addToManager);
 		
 	}
 	

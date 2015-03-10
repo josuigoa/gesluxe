@@ -19,9 +19,9 @@ class TransformGesture extends Gesture
 	public var rotation:Float = 0;
 	public var scale:Float = 1;
 
-	public function new() 
+	public function new(addToManager:Bool = true) 
 	{
-		super();
+		super(addToManager);
 		
 	}
 	

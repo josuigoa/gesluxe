@@ -78,9 +78,9 @@ class SwipeGesture extends Gesture
 	var _timer:Timer;
 	
 
-	public function new() 
+	public function new(addToManager:Bool = true) 
 	{
-		super();
+		super(addToManager);
 		
 		_offset = new Vector();
 		_avrgVel = new Vector();

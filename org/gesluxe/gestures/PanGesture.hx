@@ -23,9 +23,9 @@ class PanGesture extends Gesture
 	public var offsetX:Float = 0;
 	public var offsetY:Float = 0;
 
-	public function new() 
+	public function new(addToManager:Bool = true) 
 	{
-		super();
+		super(addToManager);
 		
 		maxNumTouchesRequired = Std.int(Math.pow(2, 31));
 		minNumTouchesRequired = 1;

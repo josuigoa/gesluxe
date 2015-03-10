@@ -19,9 +19,9 @@ class ZoomGesture extends Gesture
 	public var scaleX:Float = 1;
 	public var scaleY:Float = 1;
 
-	public function new() 
+	public function new(addToManager:Bool = true) 
 	{
-		super();
+		super(addToManager);
 		
 		//scaleX = scaleY = 1;
 	}

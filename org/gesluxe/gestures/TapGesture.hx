@@ -23,9 +23,9 @@ class TapGesture extends Gesture
 	var _tapCounter:UInt = 0;
 	var _touchBeginLocations:Array<Vector>;
 
-	public function new() 
+	public function new(addToManager:Bool = true) 
 	{
-		super();
+		super(addToManager);
 		
 		_touchBeginLocations = new Array<Vector>();
 		canPreventGesture = can_prevent_gesture;
