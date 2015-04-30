@@ -1,7 +1,7 @@
 package org.gesluxe.core;
-import snow.utils.Timer;
 import luxe.Vector;
 import org.gesluxe.utils.GestureUtils;
+import snow.Snow;
 
 /**
  * ...
@@ -45,7 +45,7 @@ class TouchesManager
 		var touch:Touch = createTouch();
 		touch.id = touchID;
 		
-		touch.setLocation(x, y, Std.int(Timer.stamp() * 1000));
+		touch.setLocation(x, y, Std.int(Snow.timestamp * 1000));
 		
 		_touchesMap[touchID] = touch;
 		activeTouchesCount++;
@@ -61,7 +61,7 @@ class TouchesManager
 			return;// touch with specified ID isn't registered
 		
 		var touch = _touchesMap.get(touchID);
-		if (touch.updateLocation(x, y, Std.int(Timer.stamp()*1000)))
+		if (touch.updateLocation(x, y, Std.int(Snow.timestamp * 1000)))
 		{
 			// NB! It appeared that native TOUCH_MOVE event is dispatched also when
 			// the location is the same, but size has changed. We are only interested
@@ -78,7 +78,7 @@ class TouchesManager
 			return;// touch with specified ID isn't registered
 		
 		var touch = _touchesMap.get(touchID);
-		touch.updateLocation(x, y, Std.int(Timer.stamp()*1000));
+		touch.updateLocation(x, y, Std.int(Snow.timestamp * 1000));
 		
 		_touchesMap.remove(touchID);
 		activeTouchesCount--;
@@ -93,7 +93,7 @@ class TouchesManager
 			return;// touch with specified ID isn't registered
 		
 		var touch = _touchesMap.get(touchID);
-		touch.updateLocation(x, y, Std.int(Timer.stamp()*1000));
+		touch.updateLocation(x, y, Std.int(Snow.timestamp * 1000));
 		
 		_touchesMap.remove(touchID);
 		activeTouchesCount--;
