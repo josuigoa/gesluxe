@@ -303,7 +303,7 @@ class Gesture
 		
 		for (gestureToFail in _gesturesToFail.keys())
 		{
-			gestureToFail.events.disconnect(GestureEvent.GESTURE_STATE_CHANGE);
+			gestureToFail.events.unlisten(GestureEvent.GESTURE_STATE_CHANGE);
 			//gestureToFail.removeEventListener(GestureEvent.GESTURE_STATE_CHANGE, gestureToFailstateChangeHandler);
 		}
 		_pendingRecognizedState = null;
