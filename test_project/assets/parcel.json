@@ -1,6 +1,7 @@
 {
     "textures" : [
         { "id" : "assets/luxelogo.png" },
-        { "id" : "assets/arrow.png" }
+        { "id" : "assets/arrow.png" },
+        { "id" : "assets/tiny.button.png" }
     ]
 }
