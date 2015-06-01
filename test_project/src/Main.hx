@@ -47,48 +47,48 @@ class Main extends luxe.Game
     override function ready()
 	{
 		Luxe.renderer.clear_color =  new Color().rgb(0x333000);
-		var json_asset = Luxe.loadJSON('assets/parcel.json');
+        Luxe.resources.load_json('assets/parcel.json').then(function(resource) {
+            //then create a parcel to load it for us
+            var preload = new Parcel();
+            preload.from_json(resource.asset.json);
 
-		//then create a parcel to load it for us
-		var preload = new Parcel();
-		preload.from_json(json_asset.json);
+            //but, we also want a progress bar for the parcel,
+            //this is a default one, you can do your own
+            new ParcelProgress({
+                parcel      : preload,
+                background  : new Color(1,1,1,0.85),
+                oncomplete  : assets_loaded
+            });
 
-		//but, we also want a progress bar for the parcel,
-		//this is a default one, you can do your own
-		new ParcelProgress({
-			parcel      : preload,
-			background  : new Color(1,1,1,0.85),
-			oncomplete  : assets_loaded
-		});
-
-		//go!
-		preload.load();
+            //go!
+            preload.load();
+        });
     } //ready
 	
 	function assets_loaded(_)
 	{
-		var texture = Luxe.loadTexture("assets/luxelogo.png");
+		var logo_texture = Luxe.resources.texture("assets/luxelogo.png");
 		//now that the image is loaded
         //keep pixels crisp when we resize it
 		
 		//work out the correct size based on a ratio
         var h = Luxe.screen.h * .2;
-        var w = (h / texture.height) * texture.width;
+        var w = (h / logo_texture.height) * logo_texture.width;
 		
 		visual = new Visual( {
 			name:"irudia",
-			texture: texture,
+			texture: logo_texture,
 			pos:Luxe.screen.mid,
 			size:new Vector(w, h)
 		});
 		
-		texture = Luxe.loadTexture("assets/arrow.png");
+		var arrow_texture = Luxe.resources.texture("assets/arrow.png");
         h = Luxe.screen.h * .2;
-        w = (h / texture.height) * texture.width;
+        w = (h / arrow_texture.height) * arrow_texture.width;
 		
 		arrow = new Visual( {
 			name:"arrow",
-			texture: texture,
+			texture: arrow_texture,
 			pos:Luxe.screen.mid,
 			visible: false,
 			size:new Vector(w, h)

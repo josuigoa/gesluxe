@@ -32,7 +32,7 @@ class Button extends Entity
 		var mb = (_options != null && _options.batcher != null) ? _options.batcher : Luxe.renderer.batcher;
 		
 		geom = new NineSlice({
-            texture : (btnTexture == null) ? Luxe.loadTexture('tiny.button.png') : btnTexture,
+            texture : (btnTexture == null) ? Luxe.resources.texture('assets/tiny.button.png') : btnTexture,
 			parent: this,
 			batcher: mb,
             top : 4, left : 4, right : 4, bottom : 4
