@@ -85,6 +85,7 @@ class Gesture
 	{
 		preinit();
 		
+        _touchesCount = 0;
 		events = new Events();
 		_gesturesManager = Gesluxe.gesturesManager;
 		_touchesMap = new Map<Int, Touch>();
