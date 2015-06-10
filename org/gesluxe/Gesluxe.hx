@@ -30,12 +30,20 @@ class Gesluxe
 		gesturesManager = new GesturesManager();
 		_touchesManager = new TouchesManager(gesturesManager);
 
-		// desktop and desktop web browsers
+		#if web
+		// desktop web browsers
 		Luxe.core.emitter.on(Luxe.Ev.mousedown, onmousedown);
-		// mobile and mobile web browsers
+		// mobile web browsers
 		Luxe.core.emitter.on(Luxe.Ev.touchdown, ontouchdown);
 		Luxe.core.emitter.on(Luxe.Ev.touchmove, ontouchmove);
 		Luxe.core.emitter.on(Luxe.Ev.touchup, ontouchup);
+		#elseif mobile
+		Luxe.core.emitter.on(Luxe.Ev.touchdown, ontouchdown);
+		Luxe.core.emitter.on(Luxe.Ev.touchmove, ontouchmove);
+		Luxe.core.emitter.on(Luxe.Ev.touchup, ontouchup);
+		#else
+		Luxe.core.emitter.on(Luxe.Ev.mousedown, onmousedown);
+		#end
 	}
 
 	static function ontouchdown(event:TouchEvent)
