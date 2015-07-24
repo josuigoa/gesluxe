@@ -16,14 +16,16 @@ Inspired by Gestouch ActionScript 3 gesture recognition library
 
 ##Usage
 First of all, we must define the library dependency in the `project.flow` file
-```json
+```javascript
 {
+...
     build : {
       dependencies : {
         luxe : '*',
-        gesluxe : '*',
+        gesluxe : '*'
       }
-    },
+    }
+...
 }
 ```
 
