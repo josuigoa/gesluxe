@@ -15,7 +15,21 @@ Inspired by Gestouch ActionScript 3 gesture recognition library
 > haxelib git gesluxe https://github.com/josuigoa/gesluxe.git
 
 ##Usage
-First of all, we need to initialize the gesture recognizer (initialize the touch/mouse listeners)
+First of all, we must define the library dependency in the `project.flow` file
+```json
+{
+...
+    build : {
+      dependencies : {
+        luxe : '*',
+        gesluxe : '*',
+      }
+    },
+...
+}
+```
+
+Then, we need to initialize the gesture recognizer (initialize the touch/mouse listeners)
 ```haxe
 org.gesluxe.Gesluxe.init();
 ```
