@@ -18,22 +18,20 @@ Inspired by Gestouch ActionScript 3 gesture recognition library
 First of all, we must define the library dependency in the `project.flow` file
 ```json
 {
-...
     build : {
       dependencies : {
         luxe : '*',
         gesluxe : '*',
       }
     },
-...
 }
 ```
 
-Then, we need to initialize the gesture recognizer (initialize the touch/mouse listeners)
+Then, initialize the gesture recognizer (initialize the touch/mouse listeners)
 ```haxe
 org.gesluxe.Gesluxe.init();
 ```
-Then, create a new `Gesture` object (`ZoomGesture`, `PanGesture`, `SwipeGesture`...) for each gesture you want to handle
+Last, create a new `Gesture` object (`ZoomGesture`, `PanGesture`, `SwipeGesture`...) for each gesture you want to handle
 ```haxe
 // ...
 zoomGesture = new org.gesluxe.gestures.ZoomGesture();
