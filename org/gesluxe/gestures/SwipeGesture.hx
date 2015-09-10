@@ -77,10 +77,9 @@ class SwipeGesture extends Gesture
 	var _avrgVel:Vector;
 	var _timer:Timer;
 	
-
-	public function new(addToManager:Bool = true) 
+	public function new(_target_geom:phoenix.geometry.Geometry = null) 
 	{
-		super(addToManager);
+		super(_target_geom);
 		
 		_offset = new Vector();
 		_avrgVel = new Vector();
@@ -110,6 +109,8 @@ class SwipeGesture extends Gesture
 	
 	override function onTouchBegin(touch:Touch)
 	{
+		super.onTouchBegin(touch);
+		
 		if (_touchesCount > numTouchesRequired)
 		{
 			failOrIgnoreTouch(touch);
@@ -136,6 +137,8 @@ class SwipeGesture extends Gesture
 	
 	override function onTouchMove(touch:Touch)
 	{
+		super.onTouchMove(touch);
+		
 		if (_touchesCount < numTouchesRequired)
 			return;
 		
@@ -222,6 +225,8 @@ class SwipeGesture extends Gesture
 	
 	override function onTouchEnd(touch:Touch)
 	{
+		super.onTouchEnd(touch);
+		
 		if (_touchesCount < numTouchesRequired)
 			setState(GestureState.FAILED);
 	}

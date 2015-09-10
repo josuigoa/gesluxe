@@ -19,10 +19,9 @@ class TransformGesture extends Gesture
 	public var rotation:Float = 0;
 	public var scale:Float = 1;
 
-	public function new(addToManager:Bool = true) 
+	public function new(_target_geom:phoenix.geometry.Geometry = null) 
 	{
-		super(addToManager);
-		
+		super(_target_geom);
 	}
 	
 	override public function reset()
@@ -40,6 +39,8 @@ class TransformGesture extends Gesture
 	// --------------------------------------------------------------------------
 	override function onTouchBegin(touch:Touch)
 	{
+		super.onTouchBegin(touch);
+		
 		if (_touchesCount > 2)
 		{
 			failOrIgnoreTouch(touch);
@@ -65,6 +66,8 @@ class TransformGesture extends Gesture
 	
 	override function onTouchMove(touch:Touch)
 	{
+		super.onTouchMove(touch);
+		
 		var prevLocation:Vector = location.clone();
 		updateLocation();
 		
@@ -96,6 +99,8 @@ class TransformGesture extends Gesture
 	
 	override function onTouchEnd(touch:Touch)
 	{
+		super.onTouchEnd(touch);
+		
 		if (_touchesCount == 0)
 		{
 			if (state == GestureState.BEGAN || state == GestureState.CHANGED)

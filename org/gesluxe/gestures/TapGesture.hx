@@ -13,7 +13,7 @@ class TapGesture extends Gesture
 {
 	public var numTouchesRequired:UInt = 1;
 	public var numTapsRequired:UInt = 1;
-	public var slop:Float = Gesture.DEFAULT_SLOP << 2;//iOS has 45px for 132 dpi screen
+	public var slop:Float = Gesture.DEFAULT_SLOP << 2;
 	public var maxTapDelay:UInt = 400;
 	public var maxTapDuration:UInt = 1500;
 	public var maxTapDistance:Float = Gesture.DEFAULT_SLOP << 2;
@@ -23,9 +23,9 @@ class TapGesture extends Gesture
 	var _tapCounter:UInt = 0;
 	var _touchBeginLocations:Array<Vector>;
 
-	public function new(addToManager:Bool = true) 
+	public function new(_target_geom:phoenix.geometry.Geometry = null) 
 	{
-		super(addToManager);
+		super(_target_geom);
 		
 		_touchBeginLocations = new Array<Vector>();
 		canPreventGesture = can_prevent_gesture;
@@ -73,6 +73,8 @@ class TapGesture extends Gesture
 	
 	override function onTouchBegin(touch:Touch)
 	{
+		super.onTouchBegin(touch);
+		
 		if (_touchesCount > numTouchesRequired)
 		{
 			failOrIgnoreTouch(touch);
@@ -124,6 +126,8 @@ class TapGesture extends Gesture
 	
 	override function onTouchMove(touch:Touch)
 	{
+		super.onTouchMove(touch);
+		
 		if (slop >= 0 && touch.locationOffset.length > slop)
 		{
 			setState(GestureState.FAILED);
@@ -133,6 +137,8 @@ class TapGesture extends Gesture
 	
 	override function onTouchEnd(touch:Touch)
 	{
+		super.onTouchEnd(touch);
+		
 		if (!_numTouchesRequiredReached)
 		{
 			setState(GestureState.FAILED);

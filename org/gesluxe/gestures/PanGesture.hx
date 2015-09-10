@@ -23,9 +23,9 @@ class PanGesture extends Gesture
 	public var offsetX:Float = 0;
 	public var offsetY:Float = 0;
 
-	public function new(addToManager:Bool = true) 
+	public function new(_target_geom:phoenix.geometry.Geometry = null) 
 	{
-		super(addToManager);
+		super(_target_geom);
 		
 		maxNumTouchesRequired = Std.int(Math.pow(2, 31));
 		minNumTouchesRequired = 1;
@@ -38,6 +38,8 @@ class PanGesture extends Gesture
 	// --------------------------------------------------------------------------
 	override function onTouchBegin(touch:Touch)
 	{
+		super.onTouchBegin(touch);
+		
 		if (_touchesCount > maxNumTouchesRequired)
 		{
 			failOrIgnoreTouch(touch);
@@ -50,6 +52,8 @@ class PanGesture extends Gesture
 	
 	override function onTouchMove(touch:Touch)
 	{
+		super.onTouchMove(touch);
+		
 		if (_touchesCount < minNumTouchesRequired)
 			return;
 		
@@ -92,6 +96,8 @@ class PanGesture extends Gesture
 	
 	override function onTouchEnd(touch:Touch)
 	{
+		super.onTouchEnd(touch);
+		
 		if (_touchesCount < minNumTouchesRequired)
 		{
 			if (state == GestureState.POSSIBLE)

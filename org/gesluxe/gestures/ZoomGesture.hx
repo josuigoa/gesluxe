@@ -19,9 +19,9 @@ class ZoomGesture extends Gesture
 	public var scaleX:Float = 1;
 	public var scaleY:Float = 1;
 
-	public function new(addToManager:Bool = true) 
+	public function new(_target_geom:phoenix.geometry.Geometry = null) 
 	{
-		super(addToManager);
+		super(_target_geom);
 		
 		//scaleX = scaleY = 1;
 	}
@@ -33,6 +33,8 @@ class ZoomGesture extends Gesture
 	// --------------------------------------------------------------------------
 	override function onTouchBegin(touch:Touch)
 	{
+		super.onTouchBegin(touch);
+		
 		if (_touchesCount > 2)
 		{
 			failOrIgnoreTouch(touch);
@@ -54,6 +56,8 @@ class ZoomGesture extends Gesture
 	
 	override function onTouchMove(touch:Touch)
 	{
+		super.onTouchMove(touch);
+		
 		if (_touchesCount < 2)
 			return;
 		
@@ -102,6 +106,8 @@ class ZoomGesture extends Gesture
 	
 	override function onTouchEnd(touch:Touch)
 	{
+		super.onTouchEnd(touch);
+		
 		if (_touchesCount == 0)
 		{
 			if (state == GestureState.BEGAN || state == GestureState.CHANGED)

@@ -21,9 +21,9 @@ class LongPressGesture extends Gesture
 	var _timer:Timer;
 	var _numTouchesRequiredReached:Bool;
 
-	public function new(addToManager:Bool = true) 
+	public function new(_target_geom:phoenix.geometry.Geometry = null) 
 	{
-		super(addToManager);
+		super(_target_geom);
 		
 	}
 	
@@ -53,13 +53,13 @@ class LongPressGesture extends Gesture
 		super.preinit();
 		
 		_timer = new Timer(Luxe.core);
-		//_timer.addEventListener(TimerEvent.TIMER_COMPLETE, timer_timerCompleteHandler);
-		//_timer.schedule(minPressDuration/1000, timerCompleteHandler);
 	}
 	
 	
 	override function onTouchBegin(touch:Touch)
 	{
+		super.onTouchBegin(touch);
+
 		if (_touchesCount > numTouchesRequired)
 		{
 			failOrIgnoreTouch(touch);
@@ -77,6 +77,8 @@ class LongPressGesture extends Gesture
 	
 	override function onTouchMove(touch:Touch)
 	{
+		super.onTouchMove(touch);
+
 		if (state == GestureState.POSSIBLE && slop > 0 && touch.locationOffset.length > slop)
 			setState(GestureState.FAILED);
 		else if (state == GestureState.BEGAN || state == GestureState.CHANGED)
@@ -89,6 +91,8 @@ class LongPressGesture extends Gesture
 	
 	override function onTouchEnd(touch:Touch)
 	{
+		super.onTouchEnd(touch);
+
 		if (_numTouchesRequiredReached)
 		{
 			if (state == GestureState.BEGAN || state == GestureState.CHANGED)

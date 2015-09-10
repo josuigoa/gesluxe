@@ -1,4 +1,5 @@
 package org.gesluxe.gestures;
+
 import luxe.Emitter;
 import luxe.Events;
 import luxe.Vector;
@@ -11,8 +12,13 @@ import org.gesluxe.events.GestureEvent;
  * ...
  * @author Josu Igoa
  */
-class Gesture
-{
+class Gesture {
+
+	/**
+	 * The geometry element where we want to detect the gesture. If null, it will detect the gesture anywhere.
+	 */
+	public var target_geometry:phoenix.geometry.Geometry;
+
 	public var events:Events;
 	/**
 	 * Map (generic object) of tracking touch points, where keys are touch points IDs.
@@ -81,9 +87,11 @@ class Gesture
 	public var location(get, null):Vector;
 	public var enabled(default, set):Bool;
 	
-	public function new(addToManager:Bool = true) 
+	public function new(_target_geom:phoenix.geometry.Geometry = null) 
 	{
 		preinit();
+
+		target_geometry = _target_geom;
 		
         _touchesCount = 0;
 		events = new Events();
@@ -96,8 +104,7 @@ class Gesture
 		state = GestureState.POSSIBLE;
 		idle = true;
 		
-		if (addToManager)
-			_gesturesManager.addGesture(this);
+		_gesturesManager.addGesture(this);
 	}
 	
 	/**
@@ -133,6 +140,13 @@ class Gesture
 	 */
 	function onTouchBegin(touch:Touch)
 	{
+		if (target_geometry != null) {
+			// if touch isn't inside of the target geometry, ignore the touch
+			if (!Luxe.utils.geometry.point_in_geometry(touch.location, target_geometry)) {
+				failOrIgnoreTouch(touch);
+			}
+		}
+		
 	}
 	
 	
