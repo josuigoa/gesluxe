@@ -36,7 +36,9 @@ org.gesluxe.Gesluxe.init();
 Last, create a new `Gesture` object (`ZoomGesture`, `PanGesture`, `SwipeGesture`...) for each gesture you want to handle
 ```haxe
 // ...
-zoomGesture = new org.gesluxe.gestures.ZoomGesture();
+// If you want to detect the gesture in a concrete geometry, pass it as parameter.
+// If there is no geometry passed, the gesture will be detected anywhere
+zoomGesture = new org.gesluxe.gestures.ZoomGesture(sprite.geometry);
 zoomGesture.events.listen(GestureEvent.GESTURE_BEGAN, onZoomGesture);
 zoomGesture.events.listen(GestureEvent.GESTURE_CHANGED, onZoomGesture);
 // ...
