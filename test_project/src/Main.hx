@@ -4,7 +4,7 @@ import luxe.Parcel;
 import luxe.ParcelProgress;
 import luxe.tween.Actuate;
 import luxe.tween.easing.Sine;
-import luxe.Visual;
+import luxe.Sprite;
 import org.gesluxe.core.GestureState;
 import org.gesluxe.gestures.Gesture;
 import org.gesluxe.gestures.RotateGesture;
@@ -31,8 +31,8 @@ class Main extends luxe.Game
 	var _logText:Text;
 	var _tutorial:Text;
     var hud_batcher:Batcher;
-	var visual:Visual;
-	var arrow:Visual;
+	var logo:Sprite;
+	var arrow:Sprite;
 	var currentGestureName:String;
 	var pan:PanGesture;
 	var doubleTapGesture:TapGesture;
@@ -44,38 +44,27 @@ class Main extends luxe.Game
 	var rotate:RotateGesture;
 	var transformGesture:TransformGesture;
 
-    override function ready()
-	{
-		Luxe.renderer.clear_color =  new Color().rgb(0x333000);
-        Luxe.resources.load_json('assets/parcel.json').then(function(resource) {
-            //then create a parcel to load it for us
-            var preload = new Parcel();
-            preload.from_json(resource.asset.json);
+    override function config(config:luxe.AppConfig) {
 
-            //but, we also want a progress bar for the parcel,
-            //this is a default one, you can do your own
-            new ParcelProgress({
-                parcel      : preload,
-                background  : new Color(1,1,1,0.85),
-                oncomplete  : assets_loaded
-            });
+        config.preload.textures.push({id:'assets/luxelogo.png'});
+        config.preload.textures.push({id:'assets/arrow.png'});
+        config.preload.textures.push({id:'assets/tiny.button.png'});
 
-            //go!
-            preload.load();
-        });
-    } //ready
-	
-	function assets_loaded(_)
-	{
+        return config;
+
+    } //config
+
+    override function ready() {
+
 		var logo_texture = Luxe.resources.texture("assets/luxelogo.png");
 		//now that the image is loaded
         //keep pixels crisp when we resize it
 		
 		//work out the correct size based on a ratio
-        var h = Luxe.screen.h * .2;
+        var h = Luxe.screen.h * .4;
         var w = (h / logo_texture.height) * logo_texture.width;
 		
-		visual = new Visual( {
+		logo = new Sprite( {
 			name:"irudia",
 			texture: logo_texture,
 			pos:Luxe.screen.mid,
@@ -86,7 +75,7 @@ class Main extends luxe.Game
         h = Luxe.screen.h * .2;
         w = (h / arrow_texture.height) * arrow_texture.width;
 		
-		arrow = new Visual( {
+		arrow = new Sprite( {
 			name:"arrow",
 			texture: arrow_texture,
 			pos:Luxe.screen.mid,
@@ -101,30 +90,27 @@ class Main extends luxe.Game
 								
 		_tutorial = new Text( { name: "tutorial",
 										pos: new Vector(Luxe.screen.w * .5, 5) } );
-		//_tutorial.parent = this;
 		
 		Gesluxe.init();
 		
-		//currentGestureEntity = new TapUsageEntity();
-		
-		doubleTapGesture = new TapGesture();
+		doubleTapGesture = new TapGesture(logo.geometry);
 		doubleTapGesture.numTapsRequired = 2;
 		//doubleTapGesture.maxTapDelay = 10;
 		doubleTapGesture.maxTapDistance = 100;
 		//doubleTapGesture.maxTapDuration = 20;
 		doubleTapGesture.events.listen(GestureEvent.GESTURE_RECOGNIZED, onTap);
-		twoFingerTapGesture = new TapGesture();
+		twoFingerTapGesture = new TapGesture(logo.geometry);
 		twoFingerTapGesture.numTouchesRequired = 2;
 		twoFingerTapGesture.events.listen(GestureEvent.GESTURE_RECOGNIZED, onTap);
 		
-		pan = new PanGesture();
+		pan = new PanGesture(logo.geometry);
 		//pan.minNumTouchesRequired = 1;
 		//pan.direction = PanGesture.HORIZONTAL;
 		pan.maxNumTouchesRequired = 2;
 		pan.events.listen(GestureEvent.GESTURE_BEGAN, onPan);
 		pan.events.listen(GestureEvent.GESTURE_CHANGED, onPan);
 		
-		longpress = new LongPressGesture();
+		longpress = new LongPressGesture(logo.geometry);
 		//longpress.minPressDuration = 300;
 		//longpress.numTouchesRequired = 1;
 		longpress.events.listen(GestureEvent.GESTURE_STATE_CHANGE, onLongpress);
@@ -137,16 +123,16 @@ class Main extends luxe.Game
 		//swipe.minVelocity = 50;
 		swipe.events.listen(GestureEvent.GESTURE_RECOGNIZED, onSwipe);
 		
-		zoom = new ZoomGesture();
+		zoom = new ZoomGesture(logo.geometry);
 		//zoom.lockAspectRatio = false;
 		zoom.events.listen(GestureEvent.GESTURE_BEGAN, onZoom);
 		zoom.events.listen(GestureEvent.GESTURE_CHANGED, onZoom);
 		
-		rotate = new RotateGesture();
+		rotate = new RotateGesture(logo.geometry);
 		rotate.events.listen(GestureEvent.GESTURE_BEGAN, onRotate);
 		rotate.events.listen(GestureEvent.GESTURE_CHANGED, onRotate);
 		
-		transformGesture = new TransformGesture();
+		transformGesture = new TransformGesture(logo.geometry);
 		transformGesture.events.listen(GestureEvent.GESTURE_BEGAN, onTransform);
 		transformGesture.events.listen(GestureEvent.GESTURE_CHANGED, onTransform);
 		
@@ -166,6 +152,7 @@ class Main extends luxe.Game
 		create_hud();
 		
 		onbuttonclick({type:"tap"});
+
     } //assets_loaded
 	
     override function onkeyup( e:KeyEvent )
@@ -182,16 +169,17 @@ class Main extends luxe.Game
 		if (_prop == null) _prop = { };
 		if (_prop.type == null) _prop.type = "tap";
 		
-		_logText.text = _prop.type.toUpperCase();
-		_tutorial.text = "";
-		visual.visible = _prop.type != "swipe";
-		visual.pos = Luxe.screen.mid;
-		visual.radians = 0;
-		visual.scale.x = visual.scale.y = 1;
-		arrow.visible = !visual.visible;
-		
 		currentGestureName = _prop.type;
-		switch (_prop.type) 
+
+		_logText.text = currentGestureName.toUpperCase();
+		_tutorial.text = "";
+		logo.visible = currentGestureName != "swipe";
+		logo.pos = Luxe.screen.mid;
+		logo.radians = 0;
+		logo.scale.x = logo.scale.y = 1;
+		arrow.visible = !logo.visible;
+		
+		switch (currentGestureName) 
 		{
 			case "tap":
 				_tutorial.text = "Double tap / Two fingers tap";
@@ -213,7 +201,8 @@ class Main extends luxe.Game
 			default:
 				
 		}
-	}
+
+	} //onbuttonclick
 	
     function create_hud() {
 
@@ -264,6 +253,7 @@ class Main extends luxe.Game
             color : new Color(1,1,1,0.3),
             batcher : hud_batcher
         });
+
     } //create_hud
 	
 	/* GESTURE LISTENERS */
@@ -274,23 +264,24 @@ class Main extends luxe.Game
 		var scale:Float;
 		
 		if (evd.gesture == doubleTapGesture)
-			scale = visual.scale.x * 1.2;
+			scale = logo.scale.x * 1.2;
 		else
-			scale = visual.scale.x / 1.2;
+			scale = logo.scale.x / 1.2;
 		
-		Actuate.tween(visual.scale, 0.3, {
+		Actuate.tween(logo.scale, 0.3, {
 				x: scale,
 				y: scale
 				});
-	}
+	} //onTap
 	
 	function onPan(evd:GestureEventData)
 	{
 		if (currentGestureName != "pan") return;
 		
-		visual.pos.x += pan.offsetX;
-		visual.pos.y += pan.offsetY;
-	}
+		logo.pos.x += pan.offsetX;
+		logo.pos.y += pan.offsetY;
+
+	} //onPan
 	
 	function onLongpress(evd:GestureEventData)
 	{
@@ -300,26 +291,27 @@ class Main extends luxe.Game
 		
 		if (evd.newState == GestureState.BEGAN)
 		{
-			visual.color.a = .5;
-			visual.scale.x = visual.scale.y = 1.2;
-			fingerToImageOffset.x = visual.pos.x - loc.x;
-			fingerToImageOffset.y = visual.pos.y - loc.y;
+			logo.color.a = .5;
+			logo.scale.x = logo.scale.y = 1.2;
+			fingerToImageOffset.x = logo.pos.x - loc.x;
+			fingerToImageOffset.y = logo.pos.y - loc.y;
 		}
 		else if (evd.newState == GestureState.CHANGED)
 		{
-			visual.pos.set_xy(fingerToImageOffset.x + loc.x, fingerToImageOffset.y + loc.y);
+			logo.pos.set_xy(fingerToImageOffset.x + loc.x, fingerToImageOffset.y + loc.y);
 		}
 		else if (evd.newState == GestureState.ENDED)
 		{
-			visual.color.a = 1;
-			visual.scale.x = visual.scale.y = 1;
+			logo.color.a = 1;
+			logo.scale.x = logo.scale.y = 1;
 		}
 		else if (evd.newState == GestureState.CANCELLED)
 		{
-			visual.color.a = 1;
-			visual.scale.x = visual.scale.y = 1;
+			logo.color.a = 1;
+			logo.scale.x = logo.scale.y = 1;
 		}
-	}
+
+	} //onLongpress
 	
 	function onSwipe(evd:GestureEventData)
 	{
@@ -334,35 +326,41 @@ class Main extends luxe.Game
 		arrow.rotation_z = angle;
 		arrow.color.a = 1;
 		Actuate.tween(arrow.color, 2, { a:0 } ).ease(Sine.easeIn);
-	}
+	} //onSwipe
 	
 	function onZoom(evd:GestureEventData)
 	{
 		if (currentGestureName != "zoom") return;
 		
-		visual.scale.set_xy(zoom.scaleX, zoom.scaleY);
-	}
+		if (zoom.touchesCount == 2) {
+			logo.scale.set_xy(zoom.scaleX, zoom.scaleY);
+		}
+		
+	} //onZoom
 	
 	function onRotate(evd:GestureEventData)
 	{
 		if (currentGestureName != "rotate") return;
 		
-		visual.radians = rotate.rotation;
-	}
+		if (rotate.touchesCount == 2) {
+			logo.radians = rotate.rotation;
+		}
+
+	} //onRotate
 	
 	function onTransform(evd:GestureEventData)
 	{
 		if (currentGestureName != "transform") return;
 		
 		// Panning
-		visual.pos.x += transformGesture.offsetX;
-		visual.pos.y += transformGesture.offsetY;
+		logo.pos.x += transformGesture.offsetX;
+		logo.pos.y += transformGesture.offsetY;
 		if (transformGesture.scale != 1 || transformGesture.rotation != 0)
 		{
 			// Scale and rotation.
-			visual.radians = transformGesture.rotation;
-			visual.scale.set_xy(transformGesture.scale, transformGesture.scale);
+			logo.radians = transformGesture.rotation;
+			logo.scale.set_xy(transformGesture.scale, transformGesture.scale);
 		}
-	}
+	} //onTransform
 
 } //Main
