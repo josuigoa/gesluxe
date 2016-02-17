@@ -50,7 +50,7 @@ class GesturesManager
 		{
 			_dirtyGesturesMap[gesture] = true;
 			_dirtyGesturesCount++;
-			Luxe.core.timer.schedule(Luxe.core.delta_time, resetDirtyGestures);
+			Luxe.next(resetDirtyGestures);
 		}
 	}
 	
