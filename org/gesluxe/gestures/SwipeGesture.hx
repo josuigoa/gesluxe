@@ -57,7 +57,7 @@ class SwipeGesture extends Gesture
 	 * Default value is <code>Capabilities.screenDPI / 6</code> and generally should not
 	 * be changed.
 	 */
-	public var minOffset:Float = MIN_OFFSET;
+	public var minOffset:Vector = new Vector(MIN_OFFSET, MIN_OFFSET);
 	
 	/**
 	 * Minimum velocity (in pixels per millisecond) for gesture to be recognized.
@@ -67,7 +67,7 @@ class SwipeGesture extends Gesture
 	 * @see #minOffset
 	 * @see #minDuration
 	 */
-	public var minVelocity:Float = MIN_VELOCITY;
+	public var minVelocity:Vector = new Vector(MIN_VELOCITY, MIN_VELOCITY);
 	
 	public var offsetX(get, null):Float;
 	public var offsetY(get, null):Float;
@@ -162,7 +162,7 @@ class SwipeGesture extends Gesture
 		if (_noDirection)
 		{
 			if ((offsetLength > slop || slop != slop) &&
-				(avrgVel >= minVelocity || offsetLength >= minOffset))
+				((avrgVel >= minVelocity.x || avrgVel >= minVelocity.y) && (offsetLength >= minOffset.x || offsetLength >= minOffset.y)))
 			{
 				setState(GestureState.RECOGNIZED);
 			}
@@ -175,7 +175,7 @@ class SwipeGesture extends Gesture
 			var absVelX:Float = _avrgVel.x > 0 ? _avrgVel.x : -_avrgVel.x;
 			var absVelY:Float = _avrgVel.y > 0 ? _avrgVel.y : -_avrgVel.y;
 			
-			if (absVelX > absVelY)
+			if (absVelX > absVelY) // horizontal swipe detected
 			{
 				var absOffsetX:Float = _offset.x > 0 ? _offset.x : -_offset.x;
 				
@@ -189,14 +189,14 @@ class SwipeGesture extends Gesture
 						// or too much diagonally
 						setState(GestureState.FAILED);
 					}
-					else if (absVelX >= minVelocity || absOffsetX >= minOffset)
+					else if (absVelX >= minVelocity.x && absOffsetX >= minOffset.x)
 					{
 						_offset.y = 0;
 						setState(GestureState.RECOGNIZED);
 					}
 				}
 			}
-			else if (absVelY > absVelX)
+			else if (absVelY > absVelX) // vertical swipe detected
 			{
 				var absOffsetY:Float = _offset.y > 0 ? _offset.y : -_offset.y;
 				if (absOffsetY > slop || slop != slop)//faster isNaN()
@@ -210,7 +210,7 @@ class SwipeGesture extends Gesture
 						
 						setState(GestureState.FAILED);
 					}
-					else if (absVelY >= minVelocity || absOffsetY >= minOffset)
+					else if (absVelY >= minVelocity.y && absOffsetY >= minOffset.y)
 					{
 						_offset.x = 0;
 						setState(GestureState.RECOGNIZED);

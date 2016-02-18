@@ -119,8 +119,8 @@ class Main extends luxe.Game
 		swipe = new SwipeGesture();
 		//swipe.numTouchesRequired = 1;
 		//swipe.maxDuration = 200;
-		//swipe.minOffset = 300;
-		//swipe.minVelocity = 50;
+		// swipe.minOffset = new luxe.Vector(300, 100);
+		// swipe.minVelocity = new luxe.Vector(4, .05);
 		swipe.events.listen(GestureEvent.GESTURE_RECOGNIZED, onSwipe);
 		
 		zoom = new ZoomGesture(logo.geometry);
