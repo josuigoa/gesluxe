@@ -270,15 +270,14 @@ class Gesture {
 		var touchLocation:Vector;
 		var x:Float = 0;
 		var y:Float = 0;
-		for (touchID in _touchesMap.keys())
+		for (touch in _touchesMap)
 		{
-			touchLocation = _touchesMap[touchID].location;
-			x += touchLocation.x;
-			y += touchLocation.y;
+			x += touch.location.x;
+			y += touch.location.y;
 		}
 		
 		_centralPoint.x = (x != 0) ? x / _touchesCount : 0;
-		_centralPoint.y = (y != 0) ? y / _touchesCount: 0;
+		_centralPoint.y = (y != 0) ? y / _touchesCount : 0;
 	}
 	
 	

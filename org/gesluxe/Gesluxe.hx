@@ -32,17 +32,17 @@ class Gesluxe
 
 		#if web
 		// desktop web browsers
-		Luxe.core.emitter.on(Luxe.Ev.mousedown, onmousedown);
+		Luxe.on(Luxe.Ev.mousedown, onmousedown);
 		// mobile web browsers
-		Luxe.core.emitter.on(Luxe.Ev.touchdown, ontouchdown);
-		Luxe.core.emitter.on(Luxe.Ev.touchmove, ontouchmove);
-		Luxe.core.emitter.on(Luxe.Ev.touchup, ontouchup);
+		Luxe.on(Luxe.Ev.touchdown, ontouchdown);
+		Luxe.on(Luxe.Ev.touchmove, ontouchmove);
+		Luxe.on(Luxe.Ev.touchup, ontouchup);
 		#elseif mobile
-		Luxe.core.emitter.on(Luxe.Ev.touchdown, ontouchdown);
-		Luxe.core.emitter.on(Luxe.Ev.touchmove, ontouchmove);
-		Luxe.core.emitter.on(Luxe.Ev.touchup, ontouchup);
+		Luxe.on(Luxe.Ev.touchdown, ontouchdown);
+		Luxe.on(Luxe.Ev.touchmove, ontouchmove);
+		Luxe.on(Luxe.Ev.touchup, ontouchup);
 		#else
-		Luxe.core.emitter.on(Luxe.Ev.mousedown, onmousedown);
+		Luxe.on(Luxe.Ev.mousedown, onmousedown);
 		#end
 	}
 

@@ -71,7 +71,7 @@ class DependentSwipingGestures
 	//----------------------------------
 	public function gestureShouldReceiveTouch(gesture:Gesture, touch:Touch):Bool
 	{
-		trace(touch.location.x, width / 3);
+		trace(touch.location.x + " " + width / 3);
 		if (gesture == swipe && touch.location.x > width / 3)
 			return false;
 			
