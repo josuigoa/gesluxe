@@ -32,17 +32,17 @@ class Gesluxe
 
 		#if web
 		// desktop web browsers
-		Luxe.on(Luxe.Ev.mousedown, onmousedown);
+		Luxe.on(luxe.Ev.mousedown, onmousedown);
 		// mobile web browsers
-		Luxe.on(Luxe.Ev.touchdown, ontouchdown);
-		Luxe.on(Luxe.Ev.touchmove, ontouchmove);
-		Luxe.on(Luxe.Ev.touchup, ontouchup);
+		Luxe.on(luxe.Ev.touchdown, ontouchdown);
+		Luxe.on(luxe.Ev.touchmove, ontouchmove);
+		Luxe.on(luxe.Ev.touchup, ontouchup);
 		#elseif mobile
-		Luxe.on(Luxe.Ev.touchdown, ontouchdown);
-		Luxe.on(Luxe.Ev.touchmove, ontouchmove);
-		Luxe.on(Luxe.Ev.touchup, ontouchup);
+		Luxe.on(luxe.Ev.touchdown, ontouchdown);
+		Luxe.on(luxe.Ev.touchmove, ontouchmove);
+		Luxe.on(luxe.Ev.touchup, ontouchup);
 		#else
-		Luxe.on(Luxe.Ev.mousedown, onmousedown);
+		Luxe.on(luxe.Ev.mousedown, onmousedown);
 		#end
 	}
 
@@ -93,14 +93,14 @@ class Gesluxe
 
 	static function addmouselisteners()
 	{
-		Luxe.core.emitter.on(Luxe.Ev.mousemove, onmousemove);
-		Luxe.core.emitter.on(Luxe.Ev.mouseup, onmouseup);
+		Luxe.core.emitter.on(luxe.Ev.mousemove, onmousemove);
+		Luxe.core.emitter.on(luxe.Ev.mouseup, onmouseup);
 	}
 
 	static function removemouselisteners()
 	{
-		Luxe.core.emitter.off(Luxe.Ev.mousemove, onmousemove);
-		Luxe.core.emitter.off(Luxe.Ev.mouseup, onmouseup);
+		Luxe.core.emitter.off(luxe.Ev.mousemove, onmousemove);
+		Luxe.core.emitter.off(luxe.Ev.mouseup, onmouseup);
 	}
 
 	static public function dispose()
@@ -109,11 +109,11 @@ class Gesluxe
 		gesturesManager = null;
 		touchesManager = null;
 
-		Luxe.core.emitter.off(Luxe.Ev.touchdown, ontouchdown);
-		Luxe.core.emitter.off(Luxe.Ev.touchmove, ontouchmove);
-		Luxe.core.emitter.off(Luxe.Ev.touchup, ontouchup);
+		Luxe.core.emitter.off(luxe.Ev.touchdown, ontouchdown);
+		Luxe.core.emitter.off(luxe.Ev.touchmove, ontouchmove);
+		Luxe.core.emitter.off(luxe.Ev.touchup, ontouchup);
 
-		Luxe.core.emitter.off(Luxe.Ev.mousedown, onmousedown);
+		Luxe.core.emitter.off(luxe.Ev.mousedown, onmousedown);
 		removemouselisteners();
 	}
 }
