@@ -93,14 +93,14 @@ class Gesluxe
 
 	static function addmouselisteners()
 	{
-		Luxe.core.emitter.on(luxe.Ev.mousemove, onmousemove);
-		Luxe.core.emitter.on(luxe.Ev.mouseup, onmouseup);
+		Luxe.on(luxe.Ev.mousemove, onmousemove);
+		Luxe.on(luxe.Ev.mouseup, onmouseup);
 	}
 
 	static function removemouselisteners()
 	{
-		Luxe.core.emitter.off(luxe.Ev.mousemove, onmousemove);
-		Luxe.core.emitter.off(luxe.Ev.mouseup, onmouseup);
+		Luxe.off(luxe.Ev.mousemove, onmousemove);
+		Luxe.off(luxe.Ev.mouseup, onmouseup);
 	}
 
 	static public function dispose()
@@ -109,11 +109,11 @@ class Gesluxe
 		gesturesManager = null;
 		touchesManager = null;
 
-		Luxe.core.emitter.off(luxe.Ev.touchdown, ontouchdown);
-		Luxe.core.emitter.off(luxe.Ev.touchmove, ontouchmove);
-		Luxe.core.emitter.off(luxe.Ev.touchup, ontouchup);
+		Luxe.off(luxe.Ev.touchdown, ontouchdown);
+		Luxe.off(luxe.Ev.touchmove, ontouchmove);
+		Luxe.off(luxe.Ev.touchup, ontouchup);
 
-		Luxe.core.emitter.off(luxe.Ev.mousedown, onmousedown);
+		Luxe.off(luxe.Ev.mousedown, onmousedown);
 		removemouselisteners();
 	}
 }
